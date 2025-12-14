@@ -1,6 +1,8 @@
 {
 "players":[
     {"name": "Van Foreest, Jorden", "image": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Jorden_van_Foreest_in_2025_%28cropped%29.jpg"},
-    {"name": "Jobava, Baadur", "image": "https://upload.wikimedia.org/wikipedia/commons/3/36/Jobava_Baadur_%2830304194976%29_%28cropped%29.jpg"}
+    {"name": "Jobava, Baadur", "image": "https://upload.wikimedia.org/wikipedia/commons/3/36/Jobava_Baadur_%2830304194976%29_%28cropped%29.jpg"},
+    {"name": "Ju, Wenjun", "image": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Ju_Wenjun_in_2024_%28cropped%29.jpg"},
+    {"name": "Hou, Yifan", "image": "https://upload.wikimedia.org/wikipedia/commons/3/36/Hou_Yifan_%2829762728494%29_%28cropped%29.jpg"}
 ]
 }
