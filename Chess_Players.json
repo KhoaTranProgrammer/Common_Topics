@@ -1,5 +1,7 @@
 {
 "players":[
+    {"name": "", "image": ""},
+    {"name": "", "image": ""},
     {"name": "Francisco Guecamburu, Candela Be", "image": "https://upload.wikimedia.org/wikipedia/commons/2/27/Candela_Francisco_-_2023_-_cropped.jpg"},
     {"name": "Salimova, Nurgyul", "image": "https://upload.wikimedia.org/wikipedia/commons/c/ce/Nurgyul_Salimova_at_the_Chess_Olympiad_2022_in_Chennai.jpg"},
     {"name": "Assaubayeva, Bibisara", "image": "https://upload.wikimedia.org/wikipedia/commons/9/97/Bibissara_Assaubayeva_photo.jpg"},
@@ -7,9 +9,7 @@
     {"name": "Lu, Shanglei", "image": "https://upload.wikimedia.org/wikipedia/commons/2/22/TataSteelChess2017-17.jpg"},
     {"name": "Narayanan S L", "image": "https://upload.wikimedia.org/wikipedia/commons/9/98/SLNarayanan23.jpg"},
     {"name": "Muradli, Mahammad", "image": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Mahammad_Muradli_2023.jpg"},
-    {"name": "", "image": ""},
-    {"name": "", "image": ""},
-    {"name": "", "image": ""},
+    {"name": "Madaminov, Mukhiddin", "image": "https://upload.wikimedia.org/wikipedia/commons/4/49/Mukhiddin_Madaminov_chess_player_%28cropped%29.jpg"},
     {"name": "Van Foreest, Jorden", "image": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Jorden_van_Foreest_in_2025_%28cropped%29.jpg"},
     {"name": "Jobava, Baadur", "image": "https://upload.wikimedia.org/wikipedia/commons/3/36/Jobava_Baadur_%2830304194976%29_%28cropped%29.jpg"},
     {"name": "Ju, Wenjun", "image": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Ju_Wenjun_in_2024_%28cropped%29.jpg"},
