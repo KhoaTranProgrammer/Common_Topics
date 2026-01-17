@@ -143,25 +143,98 @@ def append_to_file(filename, data):
     except (OSError, IOError) as e:
         print(f"Error appending to file: {e}")
 
+# documentary feature
+# Generate introduction text for the beginning
+## Event, number of rounds, winner
+# Generate brief introduction for each game
+## Round number, who is black, who is white
+## Evaluate the game is easy/medium/hard
+## Highlight the important steps in game, how’d they impact to result
+
+def readPGNFile(filepath):
+    infor = {}
+    with open(filepath) as pgn:
+        game = chess.pgn.read_game(pgn)
+        infor['Event'] = game.headers.get('Event', 'Unknown')
+        infor['Date'] = game.headers.get('Date', 'Unknown')
+        infor['Round'] = game.headers.get('Round', 'Unknown')
+        infor['White'] = game.headers.get('White', 'Unknown')
+        infor['Black'] = game.headers.get('Black', 'Unknown')
+        infor['Result'] = game.headers.get('Result', 'Unknown')
+    
+    return infor
+
+overview = {}
+players = {}
+
+def readPGNFiles(listdir):
+    global overview
+    global players
+
+    overview['Event'] = ""
+    overview['Rounds'] = 0
+
+    for f in os.listdir(listdir):
+        file_path = os.path.join(listdir, f)
+        if os.path.isfile(file_path):
+            file_name, file_extension = os.path.splitext(file_path)
+            if file_extension == ".pgn":
+                print(file_name)
+                infor = readPGNFile(file_path)
+                print(infor)
+                if overview['Event'] == "":
+                    overview['Event'] = infor['Event']
+                    overview['Date'] = infor['Date']
+                overview['Rounds'] += 1
+                refine_result = infor['Result'].replace('1/2', '0.5')
+
+                white_point = (float)(refine_result.split('-')[0])
+                black_point = (float)(refine_result.split('-')[1])
+
+                if infor['White'] not in players:
+                    players[infor['White']] = white_point
+                else:
+                    players[infor['White']] += white_point
+
+                if infor['Black'] not in players:
+                    players[infor['Black']] = black_point
+                else:
+                    players[infor['Black']] += black_point
+
+def findWinner():
+    global players
+    max_point = 0
+    winner = ""
+    for player in players:
+        if players[player] > max_point:
+            max_point = players[player]
+            winner = player
+    return winner
+
 if __name__ == "__main__":
     global args
 
-    # evaluate_pgn(PGN_FILE, STOCKFISH_PATH, ENGINE_DEPTH)
-    # res = analyze_pgn(PGN_FILE)
-    # append_to_file(PGN_FILE, res)
-
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", "-in", help="PGN input", default="")
+    parser.add_argument("--evaluation", "-eval", default=False, action="store_true", help="Add evaluation to PGN input")
+    parser.add_argument("--documentary", "-doc", default=False, action="store_true", help="Create document base on PGN file")
     args = parser.parse_args()
-    
-    if os.path.isfile(args.input):
-        res = analyze_pgn(args.input)
-        append_to_file(args.input, res)
-    else:
-        for f in os.listdir(args.input):
-            file_path = os.path.join(args.input, f)
-            if os.path.isfile(file_path):
-                file_name, file_extension = os.path.splitext(file_path)
-                if file_extension == ".pgn":
-                    res = analyze_pgn(file_path)
-                    append_to_file(file_path, res)
+
+    if args.evaluation is True:
+        if os.path.isfile(args.input):
+            res = analyze_pgn(args.input)
+            append_to_file(args.input, res)
+        else:
+            for f in os.listdir(args.input):
+                file_path = os.path.join(args.input, f)
+                if os.path.isfile(file_path):
+                    file_name, file_extension = os.path.splitext(file_path)
+                    if file_extension == ".pgn":
+                        res = analyze_pgn(file_path)
+                        append_to_file(file_path, res)
+    elif args.documentary is True:
+        readPGNFiles(args.input)
+        overview['Winner'] = findWinner()
+        print(f'Overview: {overview}')
+        # print(players)
+        
