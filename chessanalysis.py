@@ -16,6 +16,8 @@ STOCKFISH_PATH = "C:/Users/admin/Downloads/Compressed/stockfish-windows-x86-64-a
 PGN_FILE = "C:/Users/admin/Downloads/Van Foreest, Jorden_vs_Jobava, Baadur_2025.11.30.pgn"
 ENGINE_DEPTH = 15                      # Search depth for evaluation
 
+game_data = {}
+
 def evaluate_pgn(pgn_path, engine_path, depth=15):
     # Validate file paths
     if not Path(pgn_path).is_file():
@@ -102,6 +104,21 @@ def classify_move(diff):
         return "Neutral"
 
 def analyze_pgn(pgn_path):
+    global game_data
+
+    game_data['white_move'] = 0
+    game_data['black_move'] = 0
+
+    game_data["White_Good"] = 0
+    game_data["White_Blunder"] = 0
+    game_data["White_Mistake"] = 0
+    game_data["White_Neutral"] = 0
+
+    game_data["Black_Good"] = 0
+    game_data["Black_Blunder"] = 0
+    game_data["Black_Mistake"] = 0
+    game_data["Black_Neutral"] = 0
+
     with open(pgn_path) as pgn:
         game = chess.pgn.read_game(pgn)
         board = game.board()
@@ -128,9 +145,25 @@ def analyze_pgn(pgn_path):
                 diff = before_eval - after_eval
 
             verdict = classify_move(diff)
-            print(f"{board.fullmove_number}. {move.uci()} -> {verdict} ({diff:+} cp)")
+            # print(f"{board.fullmove_number}. {move.uci()} -> {verdict} ({diff:+} cp)")
             if eva_res == "": eva_res = verdict
             else: eva_res = eva_res + "," + verdict
+
+            if board.turn == chess.BLACK:  # White just moved
+                game_data['white_move'] += 1
+                if verdict == "Good": game_data["White_Good"] += 1
+                elif verdict == "Blunder": game_data["White_Blunder"] += 1
+                elif verdict == "Mistake": game_data["White_Mistake"] += 1
+                elif verdict == "Inaccuracy": game_data["White_Mistake"] += 1
+                else: game_data["White_Neutral"] += 1
+            else:  # Black just moved
+                game_data['black_move'] += 1
+                if verdict == "Good": game_data["Black_Good"] += 1
+                elif verdict == "Blunder": game_data["Black_Blunder"] += 1
+                elif verdict == "Mistake": game_data["Black_Mistake"] += 1
+                elif verdict == "Inaccuracy": game_data["Black_Mistake"] += 1
+                else: game_data["Black_Neutral"] += 1
+
     return eva_res
 
 def append_to_file(filename, data):
@@ -155,6 +188,7 @@ def append_to_file(filename, data):
 ## Highlight the important steps in game, how’d they impact to result
 
 def readPGNFile(filepath):
+    global game_data
     infor = {}
     with open(filepath) as pgn:
         game = chess.pgn.read_game(pgn)
@@ -164,6 +198,21 @@ def readPGNFile(filepath):
         infor['White'] = game.headers.get('White', 'Unknown')
         infor['Black'] = game.headers.get('Black', 'Unknown')
         infor['Result'] = game.headers.get('Result', 'Unknown')
+
+        game_data = {}
+        analyze_pgn(filepath)
+
+        infor['white_move'] = game_data['white_move']
+        infor['black_move'] = game_data['black_move']
+        infor['White_Good'] = game_data['White_Good']
+        infor['White_Blunder'] = game_data['White_Blunder']
+        infor['White_Mistake'] = game_data['White_Mistake']
+        infor['White_Neutral'] = game_data['White_Neutral']
+        infor['Black_Good'] = game_data['Black_Good']
+        infor['Black_Blunder'] = game_data['Black_Blunder']
+        infor['Black_Mistake'] = game_data['Black_Mistake']
+        infor['Black_Neutral'] = game_data['Black_Neutral']
+        # print(game_data)
     
     return infor
 
@@ -174,6 +223,19 @@ overview_text = [
     'At the renowned {Event} chess tournament, held on {Date}, Grandmaster {Winner} captured the championship title with a commanding performance. Over the course of {Rounds} competitive rounds, he distinguished himself by securing {Win} victories, earning {Draw} draw, and conceding only {Lose} loss, a record that underscored both his strategic brilliance and remarkable consistency.', \
     'Grandmaster {Winner} secured the championship title at the {Event} chess tournament, held on {Date}, delivering a commanding performance across {Rounds} rounds. His record of {Win} victories, {Draw} draw, and only {Lose} defeat underscored both his strategic brilliance and remarkable consistency against a strong field of competitors.'
 ]
+
+round_text = [
+    'In Round {Round}, {White} (White) faced {Black} (Black) in a {white_move}-move battle. {White} committed {White_Blunder} blunders and {White_Mistake} mistakes, while {Black} made {Black_Blunder} blunder and {Black_Mistake} mistakes. Despite the inaccuracies on both sides, {Winner} ultimately prevailed and secured the victory.',
+    'In Round {Round}, {White} (White) faced {Black} (Black) in a {white_move}-move encounter. {White} committed {White_Blunder} blunders and {White_Mistake} mistakes, while {Black} recorded {Black_Blunder} blunder and {Black_Mistake} mistakes. Despite inaccuracies from both sides, {Winner} ultimately capitalized on his opponent’s errors and secured the victory.',
+    'Round {Round} saw {White}, commanding the white pieces, clash with {Black} in black. The battle stretched across {white_move} moves, marked by tension and missteps. {White} faltered with {White_Blunder} blunders and {White_Mistake} mistakes, while {Black} stumbled once but pressed on despite {Black_Blunder} blunder and {Black_Mistake} mistakes of his own. In the end, it was {Winner} who seized the initiative, turning the tide and emerging triumphant.'
+]
+
+round_text_draw = [
+    'In Round {Round}, {White} (White) faced {Black} (Black) in a {white_move}-move battle. {White} committed {White_Blunder} blunders and {White_Mistake} mistakes, while {Black} made {Black_Blunder} blunder and {Black_Mistake} mistakes. {White} and {Black} battled to a draw, with neither player able to break through.',
+    'In Round {Round}, {White} (White) faced {Black} (Black) in a {white_move}-move encounter. {White} committed {White_Blunder} blunders and {White_Mistake} mistakes, while {Black} recorded {Black_Blunder} blunder and {Black_Mistake} mistakes. {White} and {Black} battled to a draw, with neither player able to break through.',
+    'Round {Round} saw {White}, commanding the white pieces, clash with {Black} in black. The battle stretched across {white_move} moves, marked by tension and missteps. {White} faltered with {White_Blunder} blunders and {White_Mistake} mistakes, while {Black} stumbled once but pressed on despite {Black_Blunder} blunder and {Black_Mistake} mistakes of his own. {White} and {Black} battled to a draw, with neither player able to break through.'
+]
+
 overview = {}
 players = {}
 famous_player = {'Carlsen, Magnus', 'Nakamura, Hikaru', 'Caruana, Fabiano', 'Keymer, Vincent', 'Erigaisi Arjun', \
@@ -182,12 +244,16 @@ famous_player = {'Carlsen, Magnus', 'Nakamura, Hikaru', 'Caruana, Fabiano', 'Key
                  'Vachier-Lagrave, Maxime', 'Duda, Jan-Krzysztof', 'Le, Quang Liem', 'Mamedyarov, Shakhriyar', \
                  'Aronian, Levon'}
 famous_player_in_event = []
+rounds_text = {}
 
 def readPGNFiles(listdir):
     global overview
     global players
     global famous_player
     global famous_player_in_event
+    global round_text
+    global round_text_draw
+    global rounds_text
 
     overview['Event'] = ""
     overview['Rounds'] = 0
@@ -199,7 +265,7 @@ def readPGNFiles(listdir):
             if file_extension == ".pgn":
                 print(file_name)
                 infor = readPGNFile(file_path)
-                print(infor)
+                
                 if overview['Event'] == "":
                     overview['Event'] = infor['Event']
                     overview['Date'] = infor['Date']
@@ -208,6 +274,37 @@ def readPGNFiles(listdir):
 
                 white_point = (float)(refine_result.split('-')[0])
                 black_point = (float)(refine_result.split('-')[1])
+                text_for_round = ""
+                if white_point == black_point:
+                    infor["Winner"] = ""
+                    len_of_round_text_draw = len(round_text_draw)
+                    num = random.randint(0, len_of_round_text_draw - 1)
+                    text_for_round = round_text_draw[num]
+                elif white_point > black_point:
+                    infor["Winner"] = infor['White']
+                    len_of_row_text = len(round_text)
+                    num = random.randint(0, len_of_row_text - 1)
+                    text_for_round = round_text[num]
+                else:
+                    infor["Winner"] = infor['Black']
+                    len_of_row_text = len(round_text)
+                    num = random.randint(0, len_of_row_text - 1)
+                    text_for_round = round_text[num]
+
+                text_for_round = text_for_round.replace('{Round}', (str)(infor['Round']))
+                text_for_round = text_for_round.replace('{White}', (str)(infor['White']))
+                text_for_round = text_for_round.replace('{Black}', (str)(infor['Black']))
+                text_for_round = text_for_round.replace('{White_Blunder}', (str)(infor['White_Blunder']))
+                text_for_round = text_for_round.replace('{White_Mistake}', (str)(infor['White_Mistake']))
+                text_for_round = text_for_round.replace('{Black_Mistake}', (str)(infor['Black_Mistake']))
+                text_for_round = text_for_round.replace('{Black_Blunder}', (str)(infor['Black_Blunder']))
+                text_for_round = text_for_round.replace('{Winner}', (str)(infor['Winner']))
+                text_for_round = text_for_round.replace('{white_move}', (str)(infor['white_move']))
+
+                rounds_text[(str)(infor['Round'])] = text_for_round
+
+                # print(infor)
+                # print(round_text)
 
                 if infor['White'] not in players:
                     player = {}
@@ -311,7 +408,11 @@ if __name__ == "__main__":
         introduction_text = introduction_text.replace('{Draw}', (str)(overview['Draw']))
         introduction_text = introduction_text.replace('{Lose}', (str)(overview['Lose']))
         print(introduction_text)
+        print(rounds_text)
 
         speech = gTTS(text=introduction_text, lang="en", slow=False)
         speech.save("introduction_text.mp3")
-        
+
+        for one_round in rounds_text:
+            round_speech = gTTS(text=rounds_text[one_round], lang="en", slow=False)
+            round_speech.save(f'{one_round}_text.mp3')
