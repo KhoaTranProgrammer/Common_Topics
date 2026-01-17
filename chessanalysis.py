@@ -166,10 +166,18 @@ def readPGNFile(filepath):
 
 overview = {}
 players = {}
+famous_player = {'Carlsen, Magnus', 'Nakamura, Hikaru', 'Caruana, Fabiano', 'Keymer, Vincent', 'Erigaisi Arjun', \
+                 'Giri, Anish', 'Firouzja, Alireza', 'Praggnanandhaa R', 'Gukesh D', 'Wei, Yi', 'So, Wesley', \
+                 'Abdusattorov, Nodirbek', 'Anand, Viswanathan', 'Rapport, Richard', 'Dominguez Perez, Leinier', \
+                 'Vachier-Lagrave, Maxime', 'Duda, Jan-Krzysztof', 'Le, Quang Liem', 'Mamedyarov, Shakhriyar', \
+                 'Aronian, Levon'}
+famous_player_in_event = []
 
 def readPGNFiles(listdir):
     global overview
     global players
+    global famous_player
+    global famous_player_in_event
 
     overview['Event'] = ""
     overview['Rounds'] = 0
@@ -192,22 +200,50 @@ def readPGNFiles(listdir):
                 black_point = (float)(refine_result.split('-')[1])
 
                 if infor['White'] not in players:
-                    players[infor['White']] = white_point
+                    player = {}
+                    player['point'] = white_point
+                    player['draw'] = 0
+                    player['win'] = 0
+                    player['lose'] = 0
+                    if white_point == 0.5: player['draw'] = 1
+                    elif white_point == 1: player['win'] = 1
+                    elif white_point == 0: player['lose'] = 1
+                    players[infor['White']] = player
                 else:
-                    players[infor['White']] += white_point
+                    if white_point == 0.5: players[infor['White']]['draw'] += 1
+                    elif white_point == 1: players[infor['White']]['win'] += 1
+                    elif white_point == 0: players[infor['White']]['lose'] += 1
+                    players[infor['White']]['point'] += white_point
 
                 if infor['Black'] not in players:
-                    players[infor['Black']] = black_point
+                    player = {}
+                    player['point'] = black_point
+                    player['draw'] = 0
+                    player['win'] = 0
+                    player['lose'] = 0
+                    if black_point == 0.5: player['draw'] = 1
+                    elif black_point == 1: player['win'] = 1
+                    elif black_point == 0: player['lose'] = 1
+                    players[infor['Black']] = player
                 else:
-                    players[infor['Black']] += black_point
+                    if black_point == 0.5: players[infor['Black']]['draw'] += 1
+                    elif black_point == 1: players[infor['Black']]['win'] += 1
+                    elif black_point == 0: players[infor['Black']]['lose'] += 1
+                    players[infor['Black']]['point'] += black_point
+
+                # Check if player is famous
+                if infor['White'] in famous_player:
+                    famous_player_in_event.append(infor['White'])
+                if infor['Black'] in famous_player:
+                    famous_player_in_event.append(infor['Black'])
 
 def findWinner():
     global players
     max_point = 0
     winner = ""
     for player in players:
-        if players[player] > max_point:
-            max_point = players[player]
+        if players[player]['point'] > max_point:
+            max_point = players[player]['point']
             winner = player
     return winner
 
@@ -235,6 +271,9 @@ if __name__ == "__main__":
     elif args.documentary is True:
         readPGNFiles(args.input)
         overview['Winner'] = findWinner()
+        overview['Draw'] = players[overview['Winner']]['draw']
+        overview['Win'] = players[overview['Winner']]['win']
+        overview['Lose'] = players[overview['Winner']]['lose']
         print(f'Overview: {overview}')
-        # print(players)
+        print(famous_player_in_event)
         
