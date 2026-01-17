@@ -5,6 +5,7 @@ import sys
 import argparse
 import os
 import random
+from gtts import gTTS
 from datetime import datetime
 from pathlib import Path
 from stockfish import Stockfish
@@ -168,7 +169,7 @@ def readPGNFile(filepath):
 
 overview_text = [
     'At the {Event} chess event, held on {Date}, {Winner} emerged as the champion after {Rounds} rounds, achieving {Win} victories, {Draw} draw, and {Lose} loss.', \
-    '{Winner} claimed the championship title at the {Event} chess event, , held on {Date}, concluding {Rounds} rounds with an outstanding record of {Win} victories, {Draw} draw, and {Lose} loss.', \
+    '{Winner} claimed the championship title at the {Event} chess event, held on {Date}, concluding {Rounds} rounds with an outstanding record of {Win} victories, {Draw} draw, and {Lose} loss.', \
     '{Winner} clinched the {Event} chess championship, held on {Date}, finishing {Rounds} rounds with {Win} wins, {Draw} draw, and {Lose} loss.', \
     'At the renowned {Event} chess tournament, held on {Date}, Grandmaster {Winner} captured the championship title with a commanding performance. Over the course of {Rounds} competitive rounds, he distinguished himself by securing {Win} victories, earning {Draw} draw, and conceding only {Lose} loss, a record that underscored both his strategic brilliance and remarkable consistency.', \
     'Grandmaster {Winner} secured the championship title at the {Event} chess tournament, held on {Date}, delivering a commanding performance across {Rounds} rounds. His record of {Win} victories, {Draw} draw, and only {Lose} defeat underscored both his strategic brilliance and remarkable consistency against a strong field of competitors.'
@@ -304,10 +305,13 @@ if __name__ == "__main__":
         dt = datetime.strptime(overview['Date'], "%Y.%m.%d")
         formatted_date = dt.strftime("%B %d, %Y")
         introduction_text = introduction_text.replace('{Date}', formatted_date)
-        
+
         introduction_text = introduction_text.replace('{Rounds}', (str)(overview['Rounds']))
         introduction_text = introduction_text.replace('{Win}', (str)(overview['Win']))
         introduction_text = introduction_text.replace('{Draw}', (str)(overview['Draw']))
         introduction_text = introduction_text.replace('{Lose}', (str)(overview['Lose']))
         print(introduction_text)
+
+        speech = gTTS(text=introduction_text, lang="en", slow=False)
+        speech.save("introduction_text.mp3")
         
