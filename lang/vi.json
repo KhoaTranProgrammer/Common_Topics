@@ -1,0 +1,613 @@
+{
+    "meta": {
+    "code": "vi",
+    "name": "Tiếng Việt",
+    "tts": "vi"
+    },
+    "pieces": {
+        "pawn": "tốt",
+        "knight": "mã",
+        "bishop": "tượng",
+        "rook": "xe",
+        "queen": "hậu",
+        "king": "vua"
+    },
+    "sides": {
+        "white": "Trắng",
+        "black": "Đen"
+    },
+    "speak_subs": [
+        ["O-O-O", "nhập thành xa"],
+        ["O-O", "nhập thành gần"],
+        ["'??'", "hai dấu hỏi chấm"],
+        ["'!!'", "hai dấu chấm than"],
+        ["'!?'", "dấu chấm than hỏi chấm"],
+        ["'?'", "dấu hỏi chấm"],
+        ["'!'", "dấu chấm than"],
+        ["1/2-1/2", "hòa"],
+        ["1-0", "một không"],
+        ["0-1", "không một"],
+        [" vs ", " đấu với "]
+    ],
+    "months": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+    "nouns": {
+        "move": ["nước đi", "nước đi"],
+        "capture": ["lần ăn quân", "lần ăn quân"],
+        "check": ["lần chiếu", "lần chiếu"]
+    },
+    "eco_family": {
+        "A": "khai cuộc cánh",
+        "B": "phòng thủ nửa mở",
+        "C": "cờ mở",
+        "D": "cờ đóng",
+        "E": "phòng thủ Ấn Độ"
+    },
+    "eco_flavor": {
+        "A": "Khai cuộc cánh thường né cuộc chiến trung tâm kinh điển và ưu tiên thế trận linh hoạt.",
+        "B": "Phòng thủ nửa mở dẫn đến thế cờ mất cân bằng, cả hai bên đều có cơ hội.",
+        "C": "Cờ mở thường phát triển quân nhanh và có những va chạm chiến thuật từ sớm.",
+        "D": "Cờ đóng thiên về chiến lược, sức ép được tích lũy chậm rãi.",
+        "E": "Phòng thủ Ấn Độ để Đen nhường trung tâm sớm rồi phản công sau."
+    },
+    "ui": {
+        "step1": "BƯỚC 1 - File PGN gồm hai phần",
+        "step1_body": "PGN = Portable Game Notation, định dạng văn bản thuần túy của cờ vua.\n Phần A: THẺ THÔNG TIN [Tên \"Giá trị\"]   -> thông tin ván cờ\n Phần B: DÃY NƯỚC ĐI    1. e4 e5 2. Nf3 ... -> chính các nước đi\nHai phần cách nhau bằng một dòng trống. Một file có thể chứa nhiều ván.",
+        "step2": "BƯỚC 2 - Các thẻ thông tin (thông tin ván cờ)",
+        "custom_tag": "Thẻ tùy chỉnh / không chuẩn.",
+        "step3": "BƯỚC 3 - Cách đọc dãy nước đi",
+        "movetext_of": "Dãy nước đi của ván này:",
+        "symbols_intro": "Các ký hiệu bạn sẽ gặp (ký hiệu có trong ván này được đánh dấu *):",
+        "step4": "BƯỚC 4 - Đi qua từng nước một",
+        "start_fen": "Thế cờ bản đầu (FEN)",
+        "nags": "Ký hiệu chú thích (mã NAG)",
+        "file_comment": "Ghi chú trong file",
+        "material": "Quân lực",
+        "equal": "cân bằng",
+        "press_enter": "(nhấn Enter để xem bước tiếp theo) ",
+        "step5": "BƯỚC 5 - Tống kết",
+        "players": "Kỳ thủ",
+        "result": "Kết quả",
+        "length": "Độ dài",
+        "ending": "Kết thúc",
+        "final_fen": "FEN cuối cùng",
+        "length_val": "{ply} nửa nước ({full} nước đầy đủ)",
+        "end_mate": "{winner} thắng bằng chiếu bí",
+        "end_stale": "hòa do hết nước đi (hòa cờ bí)",
+        "end_insuff": "hòa do không đủ quân để chiếu bí",
+        "end_other": "đầu hàng / hết giờ / thỏa thuận hòa",
+        "mat_line": "Trắng {w}, Đen {b}",
+        "fen_note": "FEN là một cách ghi khác: nó mô tả MỘT thế cờ (vị trí quân, bên đến lượt, quyền nhập thành, ô bắt tốt qua đường, bộ đếm nửa nước, số nước đi).",
+        "no_game": "Không tìm thấy ván số {n} trong file.",
+        "saved": "Đã lưu vào {path}",
+        "step_off": "Lưu ý: --step bị bỏ qua khi ghi ra file.",
+        "out_err": "Không ghi được vào {path}: {err}",
+        "game_banner": "VÁN {i}: {white} vs {black}",
+        "audio_move": "Nước {n}.",
+        "audio_file": "Đang tạo {name} ({i}/{n}) ...",
+        "audio_saved_dir": "Đã lưu {n} file âm thanh vào {path}",
+        "audio_missing": "Chưa cài gTTS. Hãy cài bằng lệnh: pip install gTTS",
+        "audio_empty": "Không có gì để đọc. Hãy dùng --audio-content narration, hoặc bỏ --serious.",
+        "audio_part": "Đang tạo âm thanh, phần {i}/{n} ...",
+        "audio_saved": "Đã lưu âm thanh vào {path}",
+        "audio_err": "Không tạo được âm thanh ({err}). gTTS cần kết nối internet.",
+        "audio_bad_path": "Không ghi được file âm thanh vào {path}.",
+        "i_title": "GIỚI THIỆU VÁN CỜ",
+        "i_event": "Giải đấu",
+        "i_date": "Ngày",
+        "i_round": "Vòng",
+        "i_site": "Địa điểm",
+        "i_opening": "Khai cuộc",
+        "i_tc": "Thời gian đấu",
+        "i_summary": "Tóm tắt",
+        "i_elo": "Elo",
+        "i_note": "(Không tiết lộ kết quả: kết quả chỉ được công bố ở cuối.)",
+        "tc_min": "{n} phút",
+        "tc_sec": "{n} giây",
+        "tc_inc": "{n} giây mỗi nước",
+        "date_full": "ngày {d} tháng {m} năm {y}",
+        "date_my": "tháng {m} nam {y}",
+        "date_y": "năm {y}",
+        "sum_main": "{white} (Trắng) đối đầu {black} (Đen){event}{round}{date}{site}.",
+        "f_event": " tại {event}",
+        "f_round": ", vòng {round}",
+        "f_date": ", diễn ra vào {date}",
+        "f_date_y": ", diễn ra vào {date}",
+        "f_site": ", đia điểm {site}",
+        "sum_tc_bullet": "Đây là cờ siêu chớp (bullet), tốc độ quan trọng không kém độ chính xác.",
+        "sum_tc_blitz": "Đây là cờ chớp (blitz), chơi với nhịp độ như tia chớp.",
+        "sum_tc_rapid": "Đây là cờ nhanh (rapid): có thời gian suy nghi, nhưng không nhiều.",
+        "sum_tc_classical": "Ván cờ chơi theo thời gian cổ điển, đủ chổ cho những suy tính sâu.",
+        "sum_level": "Với Elo trung bình {avg}, hãy mong đợi {level}.",
+        "lvl_1": "một ván cờ giao hữu thoải mái",
+        "lvl_2": "cờ vua chắc tay ở trình câu lạc bộ",
+        "lvl_3": "cờ vua nghiệp dư mạnh",
+        "lvl_4": "cờ vua ở trình kiện tướng",
+        "lvl_5": "cờ vua đỉnh cao",
+        "sum_gap_eq": "Trên giấy tờ, {white} và {black} cân tài cân sức.",
+        "sum_gap_small": "Trên giấy tờ, {name} nhỉnh hơn một chút.",
+        "sum_gap_clear": "Trên giấy tờ, {name} là ứng viên sáng giá hơn, còn {other} là cửa dưới.",
+        "sum_gap_big": "Trên giấy tờ, {name} là ứng viên số một, hơn {diff} điểm Elo, nên {other} là cửa dưới đầy dũng cảm.",
+        "sum_opening_full": "Khai cuộc là {opening} (ECO {eco}), thuộc nhóm {family}.",
+        "sum_opening_name": "Khai cuộc là {opening}",
+        "sum_opening_eco": "Khai cuộc mang mã ECO {eco}, thuộc nhóm {family}.",
+        "sum_empty": "Ván cờ này không có nước đi nào được ghi lại.",
+        "sum_len_short": "Đây là một ván cờ gọn gàng, không lãng phí thời gian.",
+        "sum_len_medium": "Ván cờ có độ dài vừa phải, đủ chổ cho cả kế hoạch lẫn chiến thuật.",
+        "sum_len_long": "Đây là một cuộc chiến dài hơi, thử thách thể lực thực sự.",
+        "sum_cap_low": "Quân đổi chủ không nhiều, nên đây chủ yếu là cuộc đấu cơ động.",
+        "sum_cap_mid": "Các cuộc đổi quân diễn ra với nhịp độ đều đặn.",
+        "sum_cap_high": "Quân cờ bay khỏi bàn liên tục trong một cuộc chiến chiến thuật sôi động.",
+        "sum_checks": "Các cú chiếu xuất hiện thường xuyên, khiến hai bên vua luôn chịu áp lực.",
+        "sum_castle_both": "Cả hai vua đều tìm được chổ trú ẩn nhờ nhập thành.",
+        "sum_castle_one": "Chỉ có {side} nhập thành, để vua bên kia ở lại giữa bàn cờ.",
+        "sum_castle_none": "Không vua nào nhập thành, nên cả hai vẫn ở giữa bàn cờ.",
+        "sum_queens_off": "Hai hậu rời bàn cờ, đưa ván đấu dần về tàn cuộc.",
+        "sum_queens_on": "Hai hậu vẫn còn trên bàn, nên nguy hiểm không bao giờ ở xa.",
+        "sum_promo_one": "Một con tốt đi trọn đường đến phong cấp, thêm chút kịch tính.",
+        "sum_promo_many": "Tốt phong cấp hơn một lần, dấu hiệu của một cuộc chiến mở toang.",
+        "sum_tail": "Ai sẽ có tiếng nói cuối cùng? Tạm thời xin giữ bí mật.",
+        "sum_kind": "Đây là ván cờ {kind}.",
+        "kind_bullet": "siêu chớp",
+        "kind_blitz": "chớp",
+        "kind_rapid": "nhanh",
+        "kind_classical": "cổ điển",
+        "sum_level_s": "Elo trung bình của hai bên là {avg}",
+        "sum_gap_eq_s": "Trên giấy tờ, hai bên cân tài cân sức.",
+        "sum_gap_small_s": "{name} nhỉnh hơn một chút.",
+        "sum_gap_clear_s": "{name} là ứng viên sáng giá.",
+        "sum_gap_big_s": "{name} là ứng viên số một.",
+        "sum_opening_s_full": "Khai cuộc là {opening} ({eco}).",
+        "sum_opening_s_name": "Khai cuộc là {opening}.",
+        "sum_opening_s_eco": "Khai cuộc thuộc mã ECO {eco}.",
+        "sum_len_s": "Ván cờ này {len}.",
+        "len_short": "khá ngắn gọn",
+        "len_medium": "có độ dài vừa phải",
+        "len_long": "kéo dài khá lâu",
+        "sum_cap_low_s": "Ít quân đổi chủ.",
+        "sum_cap_mid_s": "Các cuộc đổi quân diễn ra đều đặn.",
+        "sum_cap_high_s": "Chiến thuật và đổi quân diễn ra dồn dập.",
+        "sum_checks_s": "Các cú chiếu liên tục xuất hiện.",
+        "sum_castle_both_s": "Cả hai vua đều nhập thành.",
+        "sum_castle_one_s": "Chỉ có {side} nhập thành.",
+        "sum_castle_none_s": "Không vua nào nhập thành.",
+        "sum_queens_off_s": "Hai hậu đã rời bàn cờ.",
+        "sum_queens_on_s": "Hai hậu vẫn còn trên bàn.",
+        "sum_promo_one_s": "Một con tốt phong cấp.",
+        "sum_promo_many_s": "Tốt phong cấp nhiều lần.",
+        "sum_tail_s": "Kết quả xin giữ bí mật.",
+        "castle": "{who} nhập thành {wing}: vua và xe đổi chổ cho an toàn.",
+        "wing_k": "cánh vua",
+        "wing_q": "cách hậu",
+        "move": "{who} đi {piece} từ (frm} đến {to}",
+        "cap": ", ăn {captured}",
+        "ep": ", bắt tốt qua đường",
+        "promo": ", và tố phong cấp thành {promo}",
+        "n_mate": "CHIẾU BÍ - ván cờ kết thúc.",
+        "n_check": "Vua {side} đang bị chiếu.",
+        "n_stale": "HÒA CỜ BÍ - hết nước đi hợp lệ nhưng không bị chiếu: hòa.",
+        "n_insuf": "Không đủ quân - không bên nào chiếu bí được: hòa."
+    },
+    "tag_help": {
+        "Event": "Tên giải đấu hoặc trận đấu.",
+        "Site": "Nơi ván cờ diễn ra (thành phố hoặc website).",
+        "Date": "Ngày chơi, định dạng YYYY.MM.DD ('?' = không rõ).",
+        "Round": "Số vòng trong giải.",
+        "White": "Tên người cần quân Trắng.",
+        "Black": "Tên người cần quân Đen.",
+        "Result": "1-0 Trắng thắng, 0-1 Đen thắng, 1/2-1/2 hòa, * chưa kết thúc.",
+        "WhiteElo": "Điểm Elo của người cần quân Trắng",
+        "BlackElo": "Điểm Elo của người cầm quân Đen.",
+        "ECO": "Mã khai cuộc theo Bách khoa toàn thư khai cuộc cờ vua (A00-E99).",
+        "Opening": "Tên khai cuộc.",
+        "TimeControl": "Luật thời gian, vd 600 = 10 phút, 180+2 = 3 phút + cộng 2 giây mỗi nước.",
+        "Termination": "Ván cờ kết thúc thế nào (bình thường, hết giờ, bỏ dở...).",
+        "FEN": "Thế cờ xuất phát tùy chỉnh (chỉ có khi không bắt đầu từ thế chuẩn).",
+        "SetUp": "'1' nghĩa là ván cờ bắt đầu từ thế cờ trong thẻ FEN."
+    },
+    "tag_quips": {
+        "Event": "Tên sang chảnh của 'nơi người ta bị stress'.",
+        "Site": "Hiện trường vụ án.",
+        "Date": "Đánh dấu lịch đi, lịch sử được viết nên (hoặc ít nhất là được ghi lại).",
+        "Round": "Vòng khổ sở thứ mấy đây.",
+        "White": "Đi trước nên bị đổ lỗi trước.",
+        "Black": "Đi sau mà được phản ứng. Lợi thế đáng ghét.",
+        "Result": "Dòng duy nhất mà hầu hết mọi người thực sự đọc.",
+        "WhiteElo": "Con số mà cái tôi của Trắng rất quý.",
+        "BlackElo": "Con số mà cái tôi của Đen rất quý.",
+        "ECO": "Số thẻ thư viện khai cuộc. Dân cờ vua mê sắp xếp hồ sơ lắm.",
+        "TimeControl": "Bao lâu thì cái đồng hồ bắt đầu phán xét bạn.",
+        "Termination": "Nguyên nhân tử vong chính thức của ván cờ."
+    },
+    "syntax_help": [
+        ["1. 2. 3.", "Số thứ tự nước đi. '3...' nghĩa là đến lượt Đen sau một ghi chú."],
+        ["e4, Nf3", "Nước tốt chỉ ghi ô đến; quân khác dùng chữ cái (K Vua, Q Hậu, R Xe, B Tượng, N Mã)."],
+        ["x", "Ăn quân, vd Qxf7 = Hậu ăn quân ở f7."],
+        ["+", "Chiếu."],
+        ["#", "Chiếu bí."],
+        ["O-O", "Nhập thành cánh vua (O-O-O = cánh hậu)."],
+        ["=Q", "Tốt phong cấp, vd e8=Q."],
+        ["Nbd2", "Phân biệt: hai con mã cùng đến được d2 nên phải thêm cột."],
+        ["{ ... }", "Đoạn ghi chú."],
+        ["( ... )", "Biển thể (một đường đi thay thế)."],
+        ["$1, !, ??", "Ký hiệu chú thích: !=hay, ?=sai lầm, ??=nước ngu."],
+        ["1-0", "Dấu kết quả ở cuối dãy nước đi."]
+    ],
+    "step_quips": {
+        "1": "Đừng lo, đơn giản hơn vẻ ngoài nhiều. Chủ yếu là ngoặc vuông và sự lạc quan.",
+        "2": "Đây là căn cước công dân của ván cờ. Tên, ngày tháng, đôi khi còn có Elo để nuôi cái tôi.",
+        "3": "Đến giờ học cấp tốc tốc ký cờ vua. Coi như kiểu nhắn tin của một mọt cờ.",
+        "4": "Chuẩn bị bỏng ngô đi. Bình luận viên có ý kiến về từng nước một.",
+        "5": "Bụi đã lắng. Đây là những gì thực sự xảy ra, bớt phần kịch tính."
+    },
+    "pools": {
+        "intro_quip": [
+            "Trước khi vào cuộc, làm quen với các nhân vật đã. Hứa không tiết lộ kết quả.",
+            "Giới thiệu nhanh, không spoil. Chúng tôi vẫn còn chút lương tâm.",
+            "Danh sách diễn viên đây. Bỏng ngô lát nữa mới tới.",
+            "Ai đấu với ai, ở đâu, lúc nào. Còn ai thằng thì xin giữ bí mật."
+        ],
+        "game_start": [
+            "Bắt đầu thôi! Xem ai hoảng trước nào.",
+            "Các quân xếp hàng như đang chờ xe buýt. Giờ thì phá đám họ thôi.",
+            "Hít thở sâu nào cả nhà. Chưa ai đi nước ngu cả, tận hưởng đi, không kéo dài lâu đâu.",
+            "Bàn cờ sạch sẽ, cái tôi đã lên đạn. Chiến thôi!",
+            "Màn đã kéo lên: {who} cầm quân Trắng đấu với {opp} cần quân Đen. Cược gì đây?",
+            "Ván cờ bắt đầu, cà phê đã sẵn sàng, lòng tự tin cũng thế. Cái cuối sẽ hết trước.",
+            "Hai bên chào nhau lịch sự. Từ giờ trở đi thì hết lịch sự.",
+            "Đồng hồ bắt đầu tích tắc. Hoặc ít nhất là trong tưởng tượng của chúng ta."
+        ],
+        "mate": [
+            "CHIẾU BÍ! Vua của {opp} nhình quanh tìm lối thoát mà chẳng thấy của nào.",
+            "Chiếu bí rồi. {who} thả mic xuống, {opp} nhìn bàn cờ im như thóc.",
+            "Hết game. Ông vua hết chỗ chạy, hết cả người che chắn.",
+            "Chiếu bí! Đâu đó có mấy điểm Elo vừa đổi chủ.",
+            "Vua của {opp} hết cả lý do lẫn hết cả ô để đi.",
+            "Hết đường lui! Vua của {opp} giờ chỉ còn biết nhìn trần nhà.",
+            "{who} kết liễu ván cờ gọn như cắt bánh. {opp} chỉ còn biết đưa tay ra bắt.",
+            "Chiếu bí! Nếu có tiếng chuông thì giờ nó đang ngân vang.",
+            "Màn cuối đã hạ. {opp} nhìn bàn cờ như nhìn hóa đơn tiền điện."
+        ],
+        "stalemate": [
+            "Hòa cờ bí! {who} đang thắng rành rành mà tự biến thành hòa. Cờ vua tàn nhẫn thật sự.",
+            "Hết nước đi hợp lệ mà không bị chiếu. Hòa, kèm cái bắt tay hơi gượng.",
+            "Hòa cờ bí! Cú ngã ngay trước vạch đích kinh điển. {who} ôm đầu, {opp} thở phào.",
+            "Vua không bị chiếu nhưng cũng chẳng đi đâu được. Đây gọi là thoát chết trong gang tấc của {opp}."
+        ],
+        "promotion": [
+            "Tốt đi đến cuối bàn và được thăng chức. Cuối cùng cũng có người được tăng lương!",
+            "Chú tốt bé nhỏ, mơ ước lớn: hóa thành {promo} tại {to}.",
+            "Tốt thành {promo}! Đi bô cả ván cờ thì cũng xứng đáng đồng tiền bát gạo.",
+            "Thăng chức! Chú tốt nhỏ xíu giờ thành {promo}, sắp phải đi họp với ban lãnh đạo.",
+            "Tốt chạm đáy bản cờ, lột xác thành {promo} ở {to}. Phim siêu anh hùng là có thật.",
+            "{who} nuôi con tốt này cả ván, giờ nó thành {promo}. Quả ngọt đây rồi."
+        ],
+        "castle_k": [
+            "{who} nhập thành cánh vua: vua chui vào, xe lượn sang. Ấm cúng ghê.",
+            "Vua đi trốn ở cánh ngắn. Khôn ngoan và rất đời.",
+            "O-O: vua đội mũ bảo hiểm chui vào hầm trú ẩn.",
+            "Nhập thành cánh vua. Vua khóa cửa, tắt đèn, tuyên bố hôm nay không tiếp khách.",
+            "Xe nhảy vào giữa, vua nép sang bên. Một cú nhập thành sạch như lau nhà.",
+            "Bên {side} khóa cửa nhà: nhập thành cánh vua, ngủ ngon nhé."
+        ],
+        "castle_q": [
+            "Nhập thành xa! {who} muốn xe ra giữa còn vua tránh xa rắc rối.",
+            "Nhập thành cánh hậu: đường dài, cảnh đẹp, thêm chút rủi ro.",
+            "O-O-O. Tốn công hơn, nhiều phong cách hơn, và liều hơn một tẹo.",
+            "Nhập thành xa: vua đi một quãng đường dài để về nhà. Lãng mạn như phim Hàn.",
+            "Vua sang cánh hậu. Hy vọng hàng tốt ở đó biết giữ bí mật."
+        ],
+        "en_passant": [
+            "Bắt tốt qua đường! Luật mà ai cũng thề là bịa, cho đến khi nó xảy ra với chính mình.",
+            "Tốt bắt quân khi đi ngang qua, như ninja mà biết nói tiếng Pháp.",
+            "En passant: khoảnh khắc 'không ai ngờ tới' hoành tráng nhất của cờ vua.",
+            "Bắt tốt qua đường! Có người vừa dùng luật mà đối thủ quên mất. Pháp luật là thế.",
+            "Tốt chớp thời cơ ăn quân ngay lúc đối thủ tưởng đã qua mặt thành công. Tinh tế như trộm vặt."
+        ],
+        "cap_pawn": [
+            "{who} gặm một con tốt ở {to}. Đồ ăn miễn phí vẫn là đồ ăn.",
+            "Một con tốt ngã xuống tại {to}. Thiệt hại nhỏ thôi, nhưng tốt cũng có cảm xúc mà.",
+            "{who} chộp con tốt ở {to} rồi làm bộ vô tội.",
+            "{opp} mất thêm một con tốt. Đâu đó có anh lính gỗ tí hon đang thở dài.",
+            "Tốt bị bắt ở {to}. Màn chết dần chết mòn bắt đầu.",
+            "{who} thu một con tốt ở {to}. Tiền lẻ cũng là tiền.",
+            "Tốt ở {to} đã hoàn thành nhiệm vụ cuộc đời: bị ăn. Cảm ơn sự cống hiến.",
+            "{opp} nhìn con tốt biến mất ở {to}, thầm nhủ chỉ là con tốt thôi mà. Câu nói của người sắp hối hận.",
+            "Con tốt rời bàn cờ. Dàn đồng ca tốt chắc đang hát buồn ở hậu trường.",
+            "Một bên ăn, một bên mất, cán cân lệch nhẹ như gió thoảng ở {to}.",
+            "Bên {side} chén một con tốt ở {to}. Ăn mặn rồi nhớ uống nước."
+        ],
+        "cap_minor": [
+            "Con {captured} bị bắt ở {to}. Tối nay chắc {opp} trằn trọc lắm.",
+            "{who} thu về một con {captured}. Một nước đi mà lời, không tệ.",
+            "Con {captured} ở {to} từng rất quan trọng với {opp}. Giờ nó là quà lưu niệm của {who}.",
+            "Đổi quân hay cướp quân? Nước sau mới biết.",
+            "{who} hốt gọn con {captured} ở ở {to}. Người ta gọi đó là dọn dẹp bàn cờ.",
+            "Con {captured} của {opp} đi vào lịch sử ở ô {to}. Không có tang lễ vì mọi người đang bận đi chơi.",
+            "Chà, con {captured} này chắc nghĩ mình an toàn ở {to}. Ngây thơ quá.",
+            "{who} ăn {captured}. {opp} nhìn quân mình ít đi, tim đập nhanh lên."
+        ],
+        "cap_rook": [
+            "XE bị hạ ở {to}! Mất cả một mảng lớn quân đội của {opp}.",
+            "{who} ăn xe. Hàng cuối của {opp} bắt đầu thấy cô đơn.",
+            "Mất xe rồi. Như mất cái xe nâng đắt tiền trong kho.",
+            "Mất xe ở {to}! {opp} nhìn hàng ngang của mình như nhìn hàm răng bị rụng.",
+            "{who} bắt xe ngon lành. Nếu có điểm cho sự ngọt ngào, nước này được 10.",
+            "Xe ngã xuống. Trong sổ tay chiến thuật có dòng gạch chân: đừng để mất xe."
+        ],
+        "cap_queen": [
+            "HẬU BỊ BẮT! {opp} bỗng thấy bàn cờ vắng lặng lạ thường.",
+            "{who} ăn hậu ở {to}. Há hốc mồm. Đổ cà phê. Im phăng phắc.",
+            "Mất hậu! Hoặc là nước thiên tài, hoặc là thảm họa, và không phải lúc nào cũng phân biệt được.",
+            "Hậu rơi! Cả bàn cờ nín thở, kể cả mấy con tốt đứng xa nhất.",
+            "{who} hạ hậu ở {to}. Một nước đi mà {opp} sẽ nhắc đến trong buổi trị liệu tâm lý.",
+            "Hậu biến mất khỏi bàn cờ. Người chơi cầm hậu bỗng thấy tay mình trống trãi."
+        ],
+        "check": [
+            "Chiếu! Vua của {opp} bị gõ cửa rất mất lịch sự.",
+            "Vua đang bị tấn công. Chạy, chắc hoặc ăn thôi.",
+            "Chiếu. Lịch sự không? Không. Hiệu quả không? Thường là có.",
+            "{who} nói xin phép với con vua bằng giọng to nhất có thể.",
+            "Vua của {opp} giật mình như bị gọi tên giữa lớp. Chiếu nè!",
+            "Một cú chiếu nhẹ nhàng như tạt nước vào mặt.",
+            "{who} hô chiếu dõng dạc. Vua nhà {opp} đang chạy tìm chổ nấp.",
+            "Bên {side} gõ cửa vua bên {opp_side} và không chờ ai ra mở."
+        ],
+        "queen_early": [
+            "Hậu ra sớm vậy? Gan thật. Gần như là có chuyện gì tệ được chứ.",
+            "Hậu xuất quân từ nước {num}. Hy vọng cô nàng có mang theo kế hoạch rút lui.",
+            "Hậu đi phiêu lưu sớm! Kiểu nước đi hoặc là thiên tài hoặc là gây cười.",
+            "Hậu ra quân sớm kiểu này thì đối thủ chỉ cần rình và cười thôi.",
+            "Nước {num} mà hậu đã xuất hiện giữa sân khấu. Ngôi sao thì không chịu chờ.",
+            "Hậu tự mình đi tiên phong. Nghe thì anh hùng, nhìn lại thì hơi liều."
+        ],
+        "knight_rim": [
+            "Người ta bảo mã ở rìa là mã dở. Con này vẫn cứ đi ra đó.",
+            "Mã lang thang ra mép bàn cờ. Cảnh thì đẹp, nhưng chả để làm gì.",
+            "Mã dạt ra mép bàn như người đi họp muộn tìm ghế cuối phòng.",
+            "Mã ra rìa rồi. Ở đó nó kiểm soát ít ô hơn cả cái cột đèn."
+        ],
+        "king_walk": [
+            "Vua đi dạo. Hoặc là tàn cuộc, hoặc là ai đó đang rất dũng cảm.",
+            "Vua đi dạo kìa! Không gì thể hiện sự tự tin bằng việc phơi quân quan trọng nhất ra.",
+            "Vua rời chổ ngồi. Cả hàng phòng thủ đồng loạt nín thở.",
+            "Vua xuống phố đi chợ giữa lúc đang đánh nhau. Dũng cảm hoặc ngốc, tùy kết quả."
+        ],
+        "pawn_open": [
+            "Nước tốt kinh điển: tương đương với việc hắng giọng trước khi nói.",
+            "Tốt tiến lên. Tốt là dân lạc quan, chẳng bao giờ ngoảnh lại.",
+            "{who} đẩy tốt lên {to}. Không gian là sức mạnh, sách bảo thế.",
+            "Nước tốt êm ru. Chẳng có gì để xem, trừ rắc rối trong tương lai.",
+            "{who} đẩy tốt: bước đầu tiên của cuộc hành trình nghìn dặm, hoặc ít nhất là hết 3 ô.",
+            "Tốt tiến lên {to}. Đội hình bắt đầu khởi động như cầu thủ trước trận.",
+            "Một nước tốt gọn ghẽ. Giáo viên cờ vua nào nhìn cũng gật đầu.",
+            "Tốt nhích lên {to} từng bước, kiên nhẫn như người xếp hàng mua trà sữa."
+        ],
+        "develop": [
+            "{who} triển khai {piece} lên {to}. Gọi cả đội dậy khỏi giường.",
+            "Con {piece} tìm được chổ đứng tốt hơn tại {to}. Năng suất ghê!",
+            "{Piece} lên {to}. Không hào nhoáng, nhưng ván cờ thường thắng nhờ những nước thế này.",
+            "Một nước {piece} bình thản. Bàn cờ lấy hơi.",
+            "{Piece} tiến ra {to}, chuẩn bị tham chiến. Khởi động xong rồi đấy.",
+            "{who} chuyển {piece} sang {to} đúng sách giáo khoa. Thầy giáo mỉm cười.",
+            "Quân {piece} rời tổ, bước ra ánh sáng ở {to}. Không phải đứa trẻ nào cũng ra khỏi nhà sớm.",
+            "Triển khai quân, bước số một của mọi ván cờ. Con {piece} đến {to} đúng giờ."
+        ],
+        "quiet": [
+            "{who} lùa con {piece} sang {to}. Kế hoạch là ... bí ẩn.",
+            "Một nước {piece} lặng lẽ. Hoặc là chiến lược sâu xa, hoặc là câu giờ.",
+            "{Piece} sang {to}. Cờ vua có cả đống nước thế này, mà ta cứ giả vờ đều là thiên tài.",
+            "Con {piece} dời sang {to}. Không ai hét, không ai reo.",
+            "{Piece} sang {to}. Ván cờ kéo dài thêm một nhịp thở.",
+            "Nước đi này chẳng có gì to tát, nhưng cũng chẳng phải lỗi của nó."
+        ],
+        "quiet_knight": [
+            "Mã nhảy chữ L tới {to}. Quân duy nhất được phép nhảy qua đầu người khác mà không bị mắng.",
+            "Con mã phi tới {to}. Cái dáng nhảy chữ L này không bao giờ lỗi mốt.",
+            "Mã lên {to}, hy vọng nó biết mình đang làm gì. Nhìn mặt nó thì có vẻ biết.",
+            "Mã đi nước chữ L như mọi khi, nhưng lần này có mục đích riêng ở {to}.",
+            "Con mã hí một tiếng rồi nhảy tới {to}. Ngựa thì cần gì giải thích."
+        ],
+        "quite_bishop": [
+            "Tượng lướt chéo tới {to}. Chỉ biết đi chéo mà vẫn sống khỏe.",
+            "Con tượng trượt sang {to} như trượt trên băng, mượt và lạnh lùng.",
+            "Tượng ra {to}. Quân này chưa bao giờ đi thẳng và hôm nay cũng không định bắt đầu.",
+            "Tượng ngắm xa từ {to}. Tầm nhìn dài thì chiến lược cũng dài.",
+            "Tượng đổi ô tới {to}. Ô trắng ô đen đều là nhà nó, không phân biệt."
+        ],
+        "quite_rook": [
+            "Xe lăn bánh tới {to}. Lăn thẳng, không rẽ, đúng chất xe.",
+            "Xe chiếm cột ở {to}. Nó thích cột mở như người ta thích quán rộng.",
+            "Con xe bước ra {to}. Trông nặng nề mà tác dụng thì cực lớn.",
+            "Xe dời tới {to}. Đống chiến thuật tàn cuộc đang vỗ tay.",
+            "Xe vươn dài tới {to}. Nó chờ thời cơ như người chờ cà phê phin."
+        ],
+        "quite_queen": [
+            "Hậu tới {to}. Quân mạnh nhất bàn cờ, đi đâu cũng như đi dạo công viên.",
+            "Hậu trượt tới {to}. Nó đi được mọi hướng và dùng cái quyền đó rất ác.",
+            "Hậu dời sang {to}. Đối thủ chợt thấy gáy lành lạnh.",
+            "Nữ hoàng chuyển sang {to}, không ai dám cản đường.",
+            "Hậu ghé thăm {to}. Chuyến thăm hữu nghị nhưng manh theo cả ý đồ."
+        ],
+        "quite_pawn": [
+            "Tốt nhích lên {to}. Mỗi bước nhỏ là một lời hứa lớn.",
+            "{who} đẩy tốt lên {to}. Nhẹ nhàng như gió, nguy hiểm như muỗi ban đêm.",
+            "Tốt đi tiếp tới {to}. Chẳng có đường lùi, chỉ có hy vọng.",
+            "Một chú tốt dũng cảm bước lên {to}, hiểu rõ rủi ro nhưng vẫn đi.",
+            "Tốt đến {to}. Cấu trúc tốt đang được viết lại, ai đọc được thì hiểu."
+        ],
+        "nag_blunder": [
+            "Người chú thích gắn '??' cho nước này. Dịch ra: ối giời ơi.",
+            "Báo động nước ngu! Kiểu nước mà 3 giờ sáng bạn vẫn nằm xem lại trong đầu.",
+            "Hai dấu hỏi chấm. Đến mấy quân cờ cũng quay mặt đi.",
+            "Hai dấu hỏi chấm! Có người vừa biến nước đi thành bài học.",
+            "Đây là kiểu nước mà huấn luyện viên sẽ tắt tiếng TV để khỏi phải xem.",
+            "Nước đi tệ đến mức bàn cờ muốn tự lật."
+        ],
+        "nag_mistake": [
+            "Một dấu '?' cho nước này. Không tệ lắm, cũng chẳng hay, chỉ là đáng tiếc.",
+            "Đáng ngờ lắm. Người chú thích đang nhăn mặt.",
+            "Một dấu hỏi nhỏ xíu, nhưng nó có thể lớn dần theo thời gian.",
+            "Hơi sai sai. Kiểu sai mà đối thủ đang cười thầm."
+        ],
+        "nag_good": [
+            "Dấu '!' cho nước này. Một khoảnh khắc sáng suốt hiếm hoi.",
+            "Nước hay! Ghi lại đi, không phải ngày nào cũng có.",
+            "Nước đi hay, gật đầu một cái.",
+            "Dấu chấm than xứng đáng. Chắc người đi nước này đã nghĩ ít nhất ba giây."
+        ],
+        "nag_brilliant": [
+            "'!!' - xuất sắc! Bật nhạc kịch tính lên nào.",
+            "Hai dấu chấm than. Có người vừa nghĩ ra ý tưởng thật sự hay.",
+            "Siêu phẩm! Nếu bàn cờ có khán giả thì giờ họ đang đứng dậy vô tay.",
+            "Hai dấu chấm than cho một nước đi mà cả máy tính cũng phải gật gù."
+        ],
+        "nag_interesting": [
+            "'!?' - thú vị! Nghĩa là chẳng ai chắc đây là thiên tài hay điên rồ.",
+            "'!?' - nước d0i này không an toàn nhưng chắc chắn là có cá tính.",
+            "Liều lĩnh có tính toán. Hoặc tính toán có liều lĩnh. Chưa biết."
+        ],
+        "swing": [
+            "Cán cân quân lực xoay chuyển! Thế lực vừa lệch đi {amount} điểm.",
+            "{who} giờ giàu thêm {amount} điểm quân. Đến lúc đếm lại quân rồi.",
+            "Biến động lớn trên bảng điểm: {amount} điểm quân đổi chủ.",
+            "{who} vừa lời {amount} điểm quân. Ngân hàng cờ vua đã ghi nhận.",
+            "Quân lực nghiêng hẳn: chênh {amount} điểm, ai nhìn bảng cũng thấy rõ.",
+            "{amount} điểm quân đổi chủ chỉ trong một nước. Giá cả cờ vua biến động ghê."
+        ],
+        "end_white": [
+            "Trắng thắng. Đen có thể đổ lỗi cho ánh sáng.",
+            "1-0. Trắng lấy điểm và được quyền tự hào đến tận ngày mai.",
+            "Trắng thắng. {white} vui, {black} ngồi lặng yên nhìn bàn cờ như nhìn bản án.",
+            "1-0! {white} mang điểm về nhà, {black} mang bài học đi ăn tối.",
+            "Kết thúc: Trắng giành chiến thắng. Đen chuyển sang chế độ ván sau sẽ khác."
+        ],
+        "end_black": [
+            "Đen thắng. Đi sau hóa ra hôm nay chẳng phải bất lợi gì.",
+            "0-1. Đen lấy điểm và lặng lẽ tận hưởng.",
+            "Đen thắng. {black} lặng lẽ cười, {white} lặng lẽ khóc.",
+            "0-1! {black} đỉnh hơn hoặc ít nhất là may hơn. {white} xin phép đi uống nước.",
+            "Kết thúc: Đen chiến thắng. Đi sau mà về đích trước, thật là chuyện lạ."
+        ],
+        "end_draw": [
+            "Hòa. Ai cũng chiến đấu hết mình mà chẳng ai được khoe. Bắt tay nhau nào.",
+            "Mỗi bên nửa điểm. Kết quả ngoại giao nhất của cờ vua.",
+            "Hòa. {white} và {black} nhìn nhau, bắt tay, rồi mỗi người tự nhủ lẽ ra mình thắng.",
+            "Chia điểm, chia luôn nỗi tiếc nuối. Cả hai bên đều đủ lý do để than.",
+            "Hòa. Kết quả mà ai cũng nói cũng được bằng giọng không được lắm."
+        ],
+        "end_none": [
+            "Không ghi kết quả rõ ràng. Có thể mạng người ta rớt, hoặc ý chí sống rớt.",
+            "Chưa có kết quả. Chắc ván đang dang dở hoặc ai đó quên ghi.",
+            "Ván cờ kết thúc trong im lặng, không có người thắng, không có sổ sách."
+        ],
+        "pre_big": [
+            "Trời đất ơi!",
+            "Ối giời!",
+            "Chấn động!",
+            "Không thể tin nổi!",
+            "Ôi mẹ ơi!",
+            "Khoan đã!",
+            "Nín thở nào!",
+            "Bình luận viên đứng bật dậy!"
+        ],
+        "post_big": [
+            "Cả phòng im phăng phắc.",
+            "Ghi vào sử sách đi.",
+            "Ai đó rót giùm tôi ly nước.",
+            "Khán giả há hốc.",
+            "Tim tôi đập thình thịch.",
+            "Quay lại xem lần nữa đi.",
+            "Chắc chắn là khoảng khắc của ngày.",
+            "Đây là lúc nên chụp màn hình."
+        ],
+        "pre_action": ["Ồi!", "Chà!", "Ái chà!", "Úi!", "Hùm...", "Xem nào!", "Có biến!", "Nghe đây!"],
+        "post_action": [
+            "Ván cờ nóng lên rồi.",
+            "Không khí căng như dây đàn.",
+            "Chuyện bắt đầu thú vị đây.",
+            "Hãy theo dõi thêm.",
+            "Ai đó pha thêm cà phê đi.",
+            "Bầu không khí đổi hẳn.",
+            "Đối thủ chắc đang tính toán gấp.",
+            "Một nhịp tim nữa trôi qua."
+        ],
+        "pre_calm": [
+            "Ừm...",
+            "Bình tĩnh nào.",
+            "Êm đềm thôi.",
+            "Chầm chậm thôi.",
+            "Không vội...",
+            "Một nước thong thả."
+        ],
+        "post_calm": [
+            "Chẳng ai vội cả.",
+            "Giông bão sẽ đến sau.",
+            "Cứ từ từ, cờ vua mà.",
+            "Yên bình trước cơn bão.",
+            "Chưa có gì đáng nói, tạm thời thế.",
+            "Uống ngụm nước đi."
+        ],
+        "repeat_piece": [
+            "Lại là con {piece} đó! Hôm nay nó làm việc không nghỉ.",
+            "Con {piece} này đi liền hai nước. Chắc nó thích du lịch.",
+            "{who} cứ mê con {piece} này, đi hoài không chán.",
+            "Vẫn là {piece} ấy. Quân khác ngồi nhìn và ghen tị.",
+            "Chăm chỉ quá! Con {piece} này cần được tăng lương."
+        ],
+        "trade_streak": [
+            "Ăn qua ăn lại liên hoàn như chợ phiên.",
+            "Đổi quân liên tục, bàn cờ thưa dần như quán cà phê cuối ngày.",
+            "Cuộc đổi quân tiếp diễn. Ai đếm chính xác thì giỏi lắm.",
+            "Hai bên ăn nhau như đang thi ăn nhanh.",
+            "Bàn cờ đang rộng ra thấy rõ."
+        ],
+        "check_streak": [
+            "Chiếu liên tục, đối thủ chẳng kịp thở.",
+            "Hai cú chiếu liền, nhịp độ này làm vua chóng mặt.",
+            "Chiếu rồi lại chiếu. Chắc {who} đam mê môn này lắm."
+        ],
+        "milestone": [
+            "Nước thứ {num}! Ván cờ vẫn đang diễn ra, kính thưa quý vị.",
+            "Đã {num} nước, cà phê nguội mất rồi.",
+            "Nước {num} rồi đó, cuộc chiến vẫn chưa ngã ngũ.",
+            "Đếm thử: {num} nước đã trôi qua mà bàn cờ vẫn còn sống.",
+            "{num} nước trôi qua, sự kiên nhẫn của khán giả bắt đầu bị thử thách."
+        ],
+        "phase_middle": [
+            "Trung cuộc bắt đầu! Từ đây trở đi, sách khai cuộc chẳng còn giúp được ai.",
+            "Khai cuộc đã xong, giờ là lúc tự lập: trung cuộc chào đón các bạn.",
+            "Hết thuộc bài, bắt đầu tự nghĩ. Trung cuộc là thế."
+        ],
+        "phase_end": [
+            "Tàn cuộc đến rồi! Bàn cờ thưa quân, vua bắt đầu phải đi làm việc thật.",
+            "Chỉ còn lác đác vài quân. Mỗi nước đi giờ đáng giá cả gia tài.",
+            "Vào tàn cuộc: nơi một con tốt có thể quyết định cả số phận."
+        ],
+        "first_blood": [
+            "Máu đầu tiên đổ xuống! Từ giờ ván cờ hết hiền lành.",
+            "Nước ăn quân đầu tiên của ván. Hòa bình chính thức chấm dứt.",
+            "Có quân đầu tiên rời bàn cờ. Hết giai đoạn xã giao.",
+            "Cuối cùng cũng có người ra tay. Ván cờ bắt đầu thật sự."
+        ],
+        "center": [
+            "Chiếm trung tâm! Sách cờ vua mà biết thì đang gật gù.",
+            "Trung tâm là đất vàng, và {who} vừa xây nhà ở đó.",
+            "Quân vào trung tâm kiểu này thì tầm ảnh hưởng lan rộng như wifi mạnh.",
+            "Ai kiểm soát trung tâm thường kiểm soát ván cờ. Nghe có vẻ đúng.",
+            "Giữa bàn cờ có thêm hàng xóm mới. Hơi ồn đấy."
+        ],
+        "retreat": [
+            "Lùi một bước để tiến hai bước, hy vọng thế.",
+            "Quân rút lui có tổ chức. Nghe thì sang, thực chất là chạy.",
+            "Lùi lại vì chiến thuật, hay vì sợ? Thôi cứ cho là chiến thuật.",
+            "Rút về cho anh toàn, bàn cờ cũng biết thương người.",
+            "Quân lùi về nhà. Có lúc nhà vẫn là nơi tốt nhất."
+        ],
+        "long_game": [
+            "Ván cờ kéo dài như phim truyền hình dài tập, ai cũng mệt nhưng chẳng ai bỏ về.",
+            "Đồng hồ vẫn tích tắc, cà phê của khán giả đã nguội lần thứ ba.",
+            "Ván này dài đến mức quân cờ bắt đầu viết di chúc.",
+            "Kiên trì là một đức tính, và cả hai kỳ thủ đều có đủ."
+        ]
+    }
+}

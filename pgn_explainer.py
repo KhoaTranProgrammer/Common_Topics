@@ -199,7 +199,7 @@ class Bag:
     """Shuffle-bag: ce tees cet ee ee ee eee
     and never repeats the last line when the bag refills."""
 
-    def _init__(self, items, rng):
+    def __init__(self, items, rng):
         self.items = list(items)
         self.rng = rng
         self.queue = []
@@ -1023,7 +1023,7 @@ def explain_game(game, T, args, seed, narr=None):
     step1_structure(game, T, fun)
     step2_headers(game, T, fun)
     step3_syntax(game, T, fun)
-    board = step4_moves(game, T, fun, show_board=args.show,
+    board = step4_moves(game, T, fun, show_board=args.board,
                         pause=args.step, narr=narr)
     step5_summary(game, board, T, fun, narr)
 
