@@ -51,7 +51,7 @@ import chess.pgn
 import io
 
 SAMPLE_PGN = """[Event "Casual Game"]
-[Site "online"]
+[Site "Online"]
 [Date "2024.05.12"]
 [Round "1"]
 [White "Alice"]
@@ -84,7 +84,7 @@ LANG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lang")
 
 PIECE_KEYS = {"pawn": chess.PAWN, "knight": chess.KNIGHT, "bishop": chess.BISHOP,
               "rook": chess.ROOK, "queen": chess.QUEEN, "king": chess.KING}
-REQUIRED_KEYS = ("pieces", "sides", "months", "nouns", "eco family", "eco_flavor",
+REQUIRED_KEYS = ("pieces", "sides", "months", "nouns", "eco_family", "eco_flavor",
                  "speak_subs", "ui", "tag_help", "tag_quips", "syntax_help",
                  "step_quips", "pools")
 
@@ -207,7 +207,7 @@ class Bag:
 
     def draw(self):
         if not self.queue:
-            self.queue = self.itens[:]
+            self.queue = self.items[:]
             self.rng.shuffle(self.queue)
             if len(self.queue) > 1 and self.queue[-1] == self.last:
                 self.queue[0], self.queue[-1] = self.queue[-1], self.queue[0]
@@ -311,7 +311,7 @@ class Commentator:
         elif after.is_stalemate():
             key, mood = "stalemate", "big"
         elif move.promotion:
-            kw["promo"] = T.piece(move. promotion)
+            kw["promo"] = T.piece(move.promotion)
             key, mood = "promotion", "action"
         elif before.is_castling(move):
             key = "castle_k" if before.is_kingside_castling(move) else "castle_q"
@@ -321,7 +321,7 @@ class Commentator:
         elif is_cap:
             cap = before.piece_at(move.to_square)
             kw["captured"] = T.piece(cap.piece_type)
-            key = {chess.PAWN: "cap pawn", chess.QUEEN: "cap_queen",
+            key = {chess.PAWN: "cap_pawn", chess.QUEEN: "cap_queen",
                    chess.ROOK: "cap_rook"}.get(cap.piece_type, "cap_minor")
             mood = "big" if cap.piece_type == chess.QUEEN else "action"
         elif ptype == chess.QUEEN and before.fullmove_number <= 5:
@@ -329,7 +329,7 @@ class Commentator:
         elif ptype == chess.KNIGHT and chess.square_file(move.to_square) in (0, 7):
             key = "knight_rim"
         elif ptype == chess.KING:
-            key = "king walk"
+            key = "king_walk"
         elif ptype == chess.PAWN and before.fullmove_number <= 6:
             key = "pawn_open"
         elif ptype in (chess.KNIGHT, chess.BISHOP) and before.fullmove_number <= 10:
@@ -399,7 +399,7 @@ class Commentator:
     def ending(self, result, names):
         if not self.enabled:
             return None
-        key = {"1-0": "end_white", "@-1": "end_black", "1/2-1/2": "end_draw"}.get(result, "end_none™")
+        key = {"1-0": "end_white", "0-1": "end_black", "1/2-1/2": "end_draw"}.get(result, "end_none")
         return self.pick(key, white=names[chess.WHITE], black=names[chess.BLACK])
 
     @staticmethod
@@ -430,7 +430,7 @@ def describe_move(board, move, T):
     piece = board.piece_at(move.from_square)
     who = T.side(board.turn)
     frm = chess.square_name(move.from_square)
-    to = chess. square_name(move.to_square)
+    to = chess.square_name(move.to_square)
 
     if board.is_castling(move):
         wing = ui["wing_k"] if board.is_kingside_castling(move) else ui["wing_q"]
@@ -516,10 +516,10 @@ def game_stats(game):
     st = {"plies": 0, "captures": 0, "checks": 0, "promotions": 0,
           "castles": {chess.WHITE: 0, chess.BLACK: 0},
           "queens_at_start": False, "queens_off": False}
-    st["queens_at_start"] = bool(len(board.pieces(chess.QUEEN, chess .WHETE)) or
+    st["queens_at_start"] = bool(len(board.pieces(chess.QUEEN, chess.WHITE)) or
                                  len(board.pieces(chess.QUEEN, chess.BLACK)))
     for move in game.mainline_moves():
-        st["plies"] +1
+        st["plies"] += 1
         mover = board.turn
         if board.is_capture(move):
             st["captures"] += 1
@@ -580,9 +580,9 @@ def build_summary(game, st, T, budget=50):
 
     # ---- opening sentence: who Plays whom, where and when (longest variant that fits) --..
     event, rnd = clean(h.get("Event")), clean(h.get("Round"))
-    site = clean(h.get("site"))
+    site = clean(h.get("Site"))
     date = format_date(h.get("Date"), T)
-    date_key = "f date y" if date and date.isdigit() else "f_date"
+    date_key = "f_date_y" if date and date.isdigit() else "f_date"
 
     def core(use_event, use_round, use_date, use_site):
         return ui["sum_main"].format(
@@ -642,7 +642,7 @@ def build_summary(game, st, T, budget=50):
     else:
         full_moves = (st["plies"] + 1) // 2
         size = "short" if full_moves <= 20 else "medium" if full_moves <= 50 else "long"
-        topics.append((7, [ui[f"sum_len_{size}"], ui[f"sum_len_s_{size}"].format(len=ui[f"len_{size}"])]))
+        topics.append((7, [ui[f"sum_len_{size}"], ui["sum_len_s"].format(len=ui[f"len_{size}"])]))
 
         ratio = st["captures"] / st["plies"]
         band = "low" if ratio < 0.12 else "mid" if ratio < 0.30 else "high"
@@ -662,7 +662,7 @@ def build_summary(game, st, T, budget=50):
             topics.append((6, [ui["sum_queens_on"], ui["sum_queens_on_s"]]))
         if st["promotions"]:
             band = "one" if st["promotions"] == 1 else "many"
-            topics.append((5, [ui[f"sum_promo_{band}"].format(n=st["pronotions" ]),
+            topics.append((5, [ui[f"sum_promo_{band}"].format(n=st["promotions"]),
                             ui[f"sum_promo_{band}_s"].format(n=st["promotions"])]))
 
     topics.append((5, [ui["sum_tail"], ui["sum_tail_s"]]))
@@ -676,7 +676,7 @@ def intro(game, T, fun, words=50, narr=None):
     if narr:
         narr.begin("intro")
         narr.heading(ui["i_title"])
-        narr.comment (quip)
+        narr.comment(quip)
 
     def row(label, value):
         if value:
@@ -689,10 +689,10 @@ def intro(game, T, fun, words=50, narr=None):
         return f"{name} ({extra})"
 
     row(ui["i_event"], clean(h.get("Event")))
-    row(ui["players"], f"{player(chess.WHITE, 'whiteElo')} vs {player(chess.BLACK, 'blackElo')}")
+    row(ui["players"], f"{player(chess.WHITE, 'WhiteElo')}  vs  {player(chess.BLACK, 'BlackElo')}")
     row(ui["i_date"], format_date(h.get("Date"), T))
     row(ui["i_round"], clean(h.get("Round")))
-    row(ui["i_site"], clean(h.get("site")))
+    row(ui["i_site"], clean(h.get("Site")))
     opening, eco = clean(h.get("Opening")), clean(h.get("ECO"))
     row(ui["i_opening"], f"{opening} ({eco})" if opening and eco else opening or eco)
     row(ui["i_tc"], format_time_control(h.get("TimeControl"), T))
@@ -761,7 +761,7 @@ def step4_moves(game, T, fun, show_board=False, pause=False, narr=None):
         explanation = describe_move(board, move, T)
         before = board.copy()
 
-        board. push(move)
+        board.push(move)
         ply += 1
 
         print(f"[{ply:>3}] {number}{dots} {san}")
@@ -804,10 +804,10 @@ def step4_moves(game, T, fun, show_board=False, pause=False, narr=None):
 
 def step5_summary(game, board, T, fun, narr=None):
     ui = T.ui
-    title(ui["steps"], fun.step_quip(5))
+    title(ui["step5"], fun.step_quip(5))
     h = game.headers
     full = (board.ply() + 1) // 2
-    print(f" {ui['players']:<9}: {h.get('white', '?')} vs {h.get('Black', '?')}")
+    print(f" {ui['players']:<9}: {h.get('White', '?')} vs {h.get('Black', '?')}")
     print(f" {ui['result']:<9}: {h.get('Result', '*')}")
     print(f" {ui['length']:<9}: " + ui["length_val"].format(ply=board.ply(), full=full))
 
@@ -930,12 +930,12 @@ def require_gtts(T):
         sys.exit(T.ui["audio_missing"])
 
 def save_audio(path, chunks, T, slow=False):
-    from gtts import gTTs
+    from gtts import gTTS
     try:
         with open(path, "wb") as handle:
             for number, chunk in enumerate(chunks, 1):
                 print(T.ui["audio_part"].format(i=number, n=len(chunks)), file=sys.stderr)
-                gTTs(text=chunk, lang=T.tts, slow=slow).write_to_fp(handle)
+                gTTS(text=chunk, lang=T.tts, slow=slow).write_to_fp(handle)
     except Exception as err: # network down, rate limit, bad path ...
         try:
             os.remove(path)
@@ -949,7 +949,7 @@ def audio_output_dir(args):
 
 def save_audio_split(folder, segments, T, slow=False):
     """One MP3 per segment inside "folder”, plus index.txt listing what each file says."""
-    from gtts import gTTs
+    from gtts import gTTS
     try:
         os.makedirs(folder, exist_ok=True)
     except OSError as err:
@@ -962,7 +962,7 @@ def save_audio_split(folder, segments, T, slow=False):
         try:
             with open(path, "wb") as handle:
                 for chunk in chunk_parts(parts):
-                    gTTs(text=chunk, lang=T.tts, slow=slow).write_to_fp(handle)
+                    gTTS(text=chunk, lang=T.tts, slow=slow).write_to_fp(handle)
         except Exception as err:
             try:
                 os.remove(path)
@@ -1023,7 +1023,7 @@ def explain_game(game, T, args, seed, narr=None):
     step1_structure(game, T, fun)
     step2_headers(game, T, fun)
     step3_syntax(game, T, fun)
-    board = step4_moves(game, T, fun, show_board=args.show_board,
+    board = step4_moves(game, T, fun, show_board=args.show,
                         pause=args.step, narr=narr)
     step5_summary(game, board, T, fun, narr)
 
@@ -1092,7 +1092,7 @@ def main():
     folder = os.path.dirname(os.path.abspath(audio_path))
 
     if not os.access(folder, os.W_OK):
-        sys.exit(T.uif["audio_bad_path"].format(path=audio_path))
+        sys.exit(T.ui["audio_bad_path"].format(path=audio_path))
     narr = Narrator(args.audio_content)
 
     # pick the game(s) BEFORE touching the output file, so a bad -g leaves no empty file
@@ -1135,6 +1135,7 @@ def main():
                             i=i, white=h.get("White", "?"), black=h.get("Black", "?")))
                 seed = None if args.seed is None else args.seed + i
                 explain_game(game, T, args, seed, narr)
+                count += 1
     finally:
         if out_file:
             out_file.close()
