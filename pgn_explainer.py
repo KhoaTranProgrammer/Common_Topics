@@ -1065,7 +1065,7 @@ def main():
     parser.add_argument("--audio", metavar="FILE", help="read the comments aloud and save them as an MP3 with gTTs "
             "('auto' = name it after the PGM file; needs internet)")
     parser.add_argument("--audio-content", choices=("comments", "narration"), default="comments",
-        help="comments = only the commentator’s remarks (default); narration = "
+        help="comments = only the commentators remarks (default); narration = "
             "also the summary, a description of each move and the ending")
     parser.add_argument("--audio-slow", action="store_true", help="speak more slowly")
     parser.add_argument("--audio-split", action="store_true", help="one MP3 per step (intro, each move, ending) saved in a folder; "
