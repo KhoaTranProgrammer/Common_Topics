@@ -772,7 +772,7 @@ def step4_moves(game, T, fun, show_board=False, pause=False, narr=None):
         if node.nags:
             print(f"      {ui['nags']}: {sorted(node.nags)}")
         if node.comment:
-            print(f"      {ui['comment']}: {node.comment.strip()}")
+            print(f"      {ui['file_comment']}: {node.comment.strip()}")
         diff = material(board, chess.WHITE) - material(board, chess.BLACK)
         if diff == 0:
             lead = ui["equal"]
