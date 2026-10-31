@@ -101,6 +101,7 @@
         "i_summary": "Tóm tắt",
         "i_elo": "Elo",
         "i_note": "(Không tiết lộ kết quả: kết quả chỉ được công bố ở cuối.)",
+        "intro_unknown_event": "một ván đấu không rõ giải",
         "tc_min": "{n} phút",
         "tc_sec": "{n} giây",
         "tc_inc": "{n} giây mỗi nước",
@@ -241,10 +242,10 @@
     },
     "pools": {
         "intro_quip": [
-            "Trước khi vào cuộc, làm quen với các nhân vật đã. Hứa không tiết lộ kết quả.",
-            "Giới thiệu nhanh, không spoil. Chúng tôi vẫn còn chút lương tâm.",
-            "Danh sách diễn viên đây. Bỏng ngô lát nữa mới tới.",
-            "Ai đấu với ai, ở đâu, lúc nào. Còn ai thắng thì xin giữ bí mật."
+            "Tại {event}, {white} đối đầu {black}; điểm đáng chú ý: {notice}",
+            "Cùng nhìn vào ván đấu tại {event}: {white} gặp {black}. {notice}",
+            "Màn so tài giữa {white} và {black} ở {event} có một chi tiết đáng chú ý: {notice}",
+            "Bối cảnh: {event}; kỳ thủ: {white} và {black}. {notice}"
         ],
         "game_start": [
             "Bắt đầu thôi! Xem ai hoảng trước nào.",

@@ -270,8 +270,8 @@ class Commentator:
     def tag_quip(self, key):
         return self.T.tag_quips.get(key) if self.enabled else None
 
-    def intro_quip(self):
-        return self.pick("intro_quip") if self.enabled else None
+    def intro_quip(self, **context):
+        return self.pick("intro_quip", **context) if self.enabled else None
 
     # ---- per-move commentary -------------------- 2-02 eee eee e nen ecenee #
     def for_move(self, before, move, after, ply, nags, names):
@@ -339,7 +339,8 @@ class Commentator:
             key = by_piece if (by_piece in T.pools and self.chance(0.75)) else "quiet"
 
         main = self.pick(key, **kw)
-        self._add(lines, self.spice(main, mood, kw))
+        main_line = self.spice(main, mood, kw)
+        self._add(lines, main_line)
 
         # ---- extras (skipped on checkmate to keep the finale clean) ----
         if not after.is_checkmate():
@@ -394,7 +395,8 @@ class Commentator:
             if nag in nags:
                 self._add(lines, self.pick(nkey, **kw))
                 break
-        return lines
+        line = main_line or (lines[0] if lines else None)
+        return [" ".join(line.split())] if line else []
 
     def ending(self, result, names):
         if not self.enabled:
@@ -572,8 +574,8 @@ def fit_summary(core_options, topics, budget):
     best = max(dp.items(), key=lambda item: item[1][0] * 1000 + item[0])
     return best[1][1]
 
-def build_summary(game, st, T, budget=50):
-    """Build a spoiler-free summary of the game (event, players, date, round, short summary)."""
+def build_summary(game, st, T, budget=80):
+    """Build a spoiler-free overview from game metadata and move-derived facts."""
     ui, h = T.ui, game.headers
     names = player_names(game, T)
     white, black = names[chess.WHITE], names[chess.BLACK]
@@ -668,10 +670,29 @@ def build_summary(game, st, T, budget=50):
     topics.append((5, [ui["sum_tail"], ui["sum_tail_s"]]))
     return fit_summary(core_options, topics, budget)
 
-def intro(game, T, fun, words=50, narr=None):
-    """Introduction block: who / what / when / where + @ spoiler-free sumary."""
+def intro(game, T, fun, words=80, narr=None):
+    """Introduction block with game context and a spoiler-free gameplay overview."""
     ui, h = T.ui, game.headers
-    quip = fun.intro_quip()
+    st = game_stats(game)
+    sentences = build_summary(game, st, T, budget=words)
+    result_teasers = {ui["sum_tail"], ui["sum_tail_s"]}
+    game_details = [sentence for sentence in sentences[1:]
+                    if sentence not in result_teasers]
+    if game_details:
+        notice = game_details[-1]
+    elif not st["plies"]:
+        notice = ui["sum_empty"]
+    else:
+        full_moves = (st["plies"] + 1) // 2
+        size = "short" if full_moves <= 20 else "medium" if full_moves <= 50 else "long"
+        notice = ui["sum_len_s"].format(len=ui[f"len_{size}"])
+    names = player_names(game, T)
+    quip = fun.intro_quip(
+        event=clean(h.get("Event")) or ui.get("intro_unknown_event", "?"),
+        white=names[chess.WHITE],
+        black=names[chess.BLACK],
+        notice=notice,
+    )
     title(ui["i_title"], quip)
     if narr:
         narr.begin("intro")
@@ -697,8 +718,9 @@ def intro(game, T, fun, words=50, narr=None):
     row(ui["i_opening"], f"{opening} ({eco})" if opening and eco else opening or eco)
     row(ui["i_tc"], format_time_control(h.get("TimeControl"), T))
 
-    print(f"\n {ui['i_summary']}:")
-    sentences = build_summary(game, game_stats(game), T, budget=words)
+    event = clean(h.get("Event"))
+    summary_heading = f"{ui['i_summary']} - {event}" if event else ui["i_summary"]
+    print(f"\n {summary_heading}:")
     if narr:
         narr.explain(" ".join(sentences))
     print(textwrap.fill(" ".join(sentences), width=76,
@@ -712,6 +734,8 @@ def step1_structure(game, T, fun):
 def step2_headers(game, T, fun):
     title(T.ui["step2"], fun.step_quip(2))
     for key, value in game.headers.items():
+        if key in {"Result", "Termination"}:
+            continue
         print(f" [{key} \"{value}\"]")
         print(f"    -> {T.tag_help.get(key, T.ui['custom_tag'])}")
         quip = fun.tag_quip(key)
@@ -724,7 +748,8 @@ def step3_syntax(game, T, fun):
     movetext = game.accept(exporter)
 
     print(T.ui["movetext_of"] + "\n")
-    print(" " + movetext.replace("\n", "\n "))
+    spoiler_free_movetext = re.sub(r"(?<!\S)(?:1-0|0-1|1/2-1/2|\*)(?!\S)", "", movetext).strip()
+    print(" " + spoiler_free_movetext.replace("\n", "\n "))
     print("\n" + T.ui["symbols_intro"] + "\n")
 
     probes = {
@@ -785,12 +810,13 @@ def step4_moves(game, T, fun, show_board=False, pause=False, narr=None):
             print(f"      >> {line}")
 
         if narr:
-            narr.begin(f"move-{ply:03d}-{number}{side_tag}-{safe_name(san)}")
+            # narr.begin(f"move-{ply:03d}-{number}{side_tag}-{safe_name(san)}")
+            narr.begin(f"{number}{side_tag}")
             narr.explain(f"{ui['audio_move'].format(n=number)} {explanation}")
             for line in lines:
                 narr.comment(line)
-            if node.comment:
-                narr.comment(node.comment.strip())
+            # if node.comment:
+            #     narr.comment(node.comment.strip())
 
         if show_board:
             print()
@@ -956,7 +982,8 @@ def save_audio_split(folder, segments, T, slow=False):
         sys.exit(T.ui["audio_err"].format(err=err))
     index = []
     for number, (label, parts) in enumerate(segments, 1):
-        name = f"{number:03d}_{label[:60]}.mp3"
+        # name = f"{number:03d}_{label[:60]}.mp3"
+        name = f"{label[:60]}.mp3"
         path = os.path.join(folder, name)
         print(T.ui["audio_file"].format(i=number, n=len(segments), name=name), file=sys.stderr)
         try:
@@ -1061,7 +1088,7 @@ def main():
     parser.add_argument("--seed", type=int, default=None, help="fixed seed for repeatable jokes")
     parser.add_argument("--serious", action="store_true", help="turn the commentator off")
     parser.add_argument("--no-intro", action="store_true", help="skip the spoiler-free game introduction")
-    parser.add_argument("--summary-words", type=int, default=50, metavar="N", help="length of the introduction sumary in words (default 50)")
+    parser.add_argument("--summary-words", type=int, default=80, metavar="N", help="length of the introduction summary in words (default 80)")
     parser.add_argument("--audio", metavar="FILE", help="read the comments aloud and save them as an MP3 with gTTs "
             "('auto' = name it after the PGM file; needs internet)")
     parser.add_argument("--audio-content", choices=("comments", "narration"), default="comments",
